@@ -1,0 +1,36 @@
+// See https://doc.freefem.org/tutorials/poisson.html for more information
+
+// Parameters
+int nn = 5;	//mesh quality
+real L = 1.; //geometry length
+real H = 1.;	//geometry height
+
+real f = 1.;	//external force
+
+// Mesh
+mesh Th = square(L*nn, H*nn, [L*x, H*y]);
+
+// Fespace
+fespace Uh(Th, P1);
+Uh u;
+Uh uh;
+
+// Macro
+macro grad(u) [dx(u), dy(u)] //
+
+// Problem
+problem Laplacian (u, uh)
+	= int2d(Th)(
+		  grad(u)' * grad(uh)
+	)
+	- int2d(Th)(
+		  f * uh
+	)
+	+ on(1, 2, 3, 4, u=0)
+	;
+
+// Solve
+Laplacian;
+
+// Plot
+plot(u, fill=true);
