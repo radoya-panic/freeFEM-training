@@ -1,0 +1,28 @@
+// Define mesh boundary
+border C(t=0,2*pi) {x=cos(t); y=sin(t);}
+
+// create the triangulated domain on the interior (LHS) of the border
+mesh Th = buildmesh(C(50));
+
+// define the finite element function space on the mesh
+fespace Vh(Th, P1);
+// first arg is the mesh, and second arg is the polynomail type
+
+// declare u and v on the function function space
+Vh u,v;
+
+// define the forcing/source term analyticaly
+func f = x*y;
+
+// define the PDE in variational form together with its's BCs
+solve Poisson(u, v, solver=LU)
+  = int2d(Th)( // bilinear part seperately
+    dx(u)*dx(v) + dy(u)*dy(v)
+    )
+    - int2d(Th)( // the linear RHS
+      f*v
+      )
+    + on(C,u=0); // finally add to the PDE the BCs
+
+// plot the result
+plot(u);
