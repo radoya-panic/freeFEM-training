@@ -1,12 +1,18 @@
+// include the code for exporting data
+include "ffmatlib.idp"
+
 // Define mesh boundary
 border C(t=0,2*pi) {x=cos(t); y=sin(t);}
 
 // create the triangulated domain on the interior (LHS) of the border
 mesh Th = buildmesh(C(50));
 
+// To see the mesh, plot it
+//plot(Th,wait=true); // wait will pause the program on this plot
+
 // define the finite element function space on the mesh
 fespace Vh(Th, P1);
-// first arg is the mesh, and second arg is the polynomail type
+// first arg is the mesh, and second arg is the polynomiall type
 
 // declare u and v on the function function space
 Vh u,v;
@@ -24,5 +30,14 @@ solve Poisson(u, v, solver=LU)
       )
     + on(C,u=0); // finally add to the PDE the BCs
 
+//the solve keyword sets up the problem and solves it straight away
+// this can be done differently by setting up problem and solving seperately
+
+
 // plot the result
 plot(u);
+
+// save everything
+savemesh(Th,"circle.msh");
+ffSaveVh(Th,Vh,"circle_vh.txt");
+ffSaveData(u,"solution.txt");

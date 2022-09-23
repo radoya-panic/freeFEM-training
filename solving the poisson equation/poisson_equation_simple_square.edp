@@ -11,7 +11,7 @@ real f = 1.;	//external force
 mesh Th = square(L*nn, H*nn, [L*x, H*y]);
 
 // Fespace
-fespace Uh(Th, P1);
+fespace Uh(Th, P2);
 Uh u;
 Uh uh;
 
