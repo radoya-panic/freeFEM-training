@@ -8,7 +8,7 @@ border C(t=0,2*pi) {x=cos(t); y=sin(t);}
 mesh Th = buildmesh(C(50));
 
 // To see the mesh, plot it
-//plot(Th,wait=true); // wait will pause the program on this plot
+plot(Th,wait=true); // wait will pause the program on this plot
 
 // define the finite element function space on the mesh
 fespace Vh(Th, P1);
@@ -38,6 +38,6 @@ solve Poisson(u, v, solver=LU)
 plot(u);
 
 // save everything
-savemesh(Th,"circle.msh");
-ffSaveVh(Th,Vh,"circle_vh.txt");
-ffSaveData(u,"solution.txt");
+savemesh(Th,"circle_50.msh");
+ffSaveVh(Th,Vh,"circle_vh_50.txt");
+ffSaveData(u,"solution_50.txt");
